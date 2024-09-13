@@ -1,4 +1,4 @@
-# Human Motor Learning (HML) Model for High-dimensional Motor Systems
+# Human Motor Learning (HML) Model for High-dimensional Motor Tasks
 This repository contains MATLAB implementation of the HML model presented in [this paper](https://doi.org/10.48550/arXiv.2404.13258).
 
 Additional files are required to reproduce the results presented in the paper concerning various human motor learning behavior.
