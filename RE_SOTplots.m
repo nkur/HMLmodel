@@ -5,7 +5,7 @@ clc; clearvars;
 
 rng('shuffle');
 
-subjects = ["01", "05", "08", "12", "14", "16"];
+subjects = ["01", "02", "03", "04", "05", "06"];
 params_all = [0.06638312 3.17414901 2.45812435 1.30978218 0.87637697 0.13695541;
               3.02844779e-03 3.14480612e+00 3.30565657e+00 1.59646841e+00 1.01647669e+00 5.45089277e-01;
               0.04560625 1.53826924 3.30723253 3.27134663 1.00814878 0.05076906;
@@ -82,7 +82,6 @@ for subID = 1:length(subjects)
     
                 u(:, k+1) = u(:, k) - dt * eta * ( (Phi'*W_hat(:, :, k)' * W_hat(:, :, k)*Phi + mu * eye(joint_dim)) * u(:, k) - k_p * Phi' * W_hat(:, :, k)' * (endPt - x(:, k)) ) + sqrt(dt) * sigma_u * randn(joint_dim, 1); 
     
-                % Adding PE noise (\xi) to deltaQ
                 deltaQ(:, k+1) = deltaQ(:, k) + dt * (-a*deltaQ(:, k) + u(:, k)) + sqrt(dt) * sigma_q * randn(joint_dim, 1);
     
                 W_hat(:, :, k+1) = W_hat(:, :, k) - dt * gamma * (W_hat(:, :, k) - W_orig) * Phi * deltaQ(:, k) * deltaQ(:, k)' * Phi';
@@ -119,13 +118,12 @@ for subID = 1:length(subjects)
             RE_true(subID, trialNum) = norm(data_all(session,trial).x(:, idx_true) - endPt);
     
             %%%%% Computing SOT for the current trial
-            SOT_true(subID, trialNum) = maxPerpendicularDist(data_all(session,trial).x, startPt, endPt)/norm(endPt - startPt);
-            SOT(subID, trialNum)      = maxPerpendicularDist(subsamp_p_hml, startPt, endPt)/norm(endPt - startPt); 
+            SOT_true(subID, trialNum) = trajStraightness(data_all(session,trial).x, startPt, endPt);
+            SOT(subID, trialNum)      = trajStraightness(x, startPt, endPt);
     
-            dispp = [num2str(session), '-', num2str(trial)];
-            disp(dispp)
-    
-        end    
+        end
+        dispp = ['Subject: ', num2str(subID), '- Session: ', num2str(session)];
+        disp(dispp)
     end
 end
 
@@ -145,8 +143,9 @@ for subID = 1:6
     titleStr = ['Subject ', num2str(subID)];
     title(titleStr)
     ylim([0, 3])
-    yticks([0:0.5:3])
+    yticks([0:0.5:2.5])
     xlim([0, 480-10])
+    ylim([0. 2.5])
     set(findobj(gca,'type','line'),'linew',2)
     set(findall(gcf,'-property','FontSize'),'FontSize',figTextSize)
     set(findall(gcf,'-property','FontName'),'FontName','Times New Roman')
@@ -155,7 +154,7 @@ for subID = 1:6
         ylabel('Reaching Error');
     else
         yticklabels([]);
-        yticks([0:0.5:3])
+        yticks([0:0.5:2.5])
     end
     xlabel('Trials')
 end
@@ -176,8 +175,9 @@ for subID = 1:6
     grid on;
     titleStr = ['Subject ', num2str(subID)];
     title(titleStr)
-    yticks([0:0.3:1.5])
+    yticks([0:0.2:1])
     xlim([0, 480-10])
+    ylim([0, 0.9])
     set(findobj(gca,'type','line'),'linew',2)
     set(findall(gcf,'-property','FontSize'),'FontSize',figTextSize)
     set(findall(gcf,'-property','FontName'),'FontName','Times New Roman')
@@ -187,17 +187,10 @@ for subID = 1:6
     
     else
         yticklabels([]);
-        yticks([0:0.3:1.5])
+        yticks([0:0.2:1])
     end
     xlabel('Trials')
 end
 set(gcf, 'Position', [1711        812        2852         400])
 t.Padding = 'none';
 t.TileSpacing = 'tight';
-
-
-
-
-
-
-

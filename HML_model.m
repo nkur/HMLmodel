@@ -113,9 +113,9 @@ for subID_idx = 1:length(subjects)
             FME_sub_trials(subID_idx, trial_idx) = FME;
             
             %%% Subsampling for Comp %%%%%%%%%%%%%%%%%%%%%
-            p_hml = x;
-            subsamp_x_hml(1,:) = interp1(plot_time, p_hml(1,:), data_all(session,trial).time);
-            subsamp_x_hml(2,:) = interp1(plot_time, p_hml(2,:), data_all(session,trial).time);
+            x_hml = x;
+            subsamp_x_hml(1,:) = interp1(plot_time, x_hml(1,:), data_all(session,trial).time);
+            subsamp_x_hml(2,:) = interp1(plot_time, x_hml(2,:), data_all(session,trial).time);
             subsamp_x_hml(isnan(subsamp_x_hml)) = 0;
 
             % Subsampling the joint angles
@@ -138,13 +138,12 @@ for subID_idx = 1:length(subjects)
     
             %%%%% Computing SOT for the current trial
             SOT_true(subID_idx, trial_idx) = trajStraightness(data_all(session,trial).x, startPt, endPt);
-            SOT(subID_idx, trial_idx)      = trajStraightness(subsamp_x_hml, startPt, endPt); 
+            SOT(subID_idx, trial_idx)      = trajStraightness(x, startPt, endPt);     
     
-    
-            dispp = ['Subject: ', num2str(subID_idx), '- Session: ', num2str(session)];
-            disp(dispp)
-    
-        end    
+        end
+        
+        dispp = ['Subject: ', num2str(subID_idx), '- Session: ', num2str(session)];
+        disp(dispp)   
     end
 end
 
