@@ -1,7 +1,9 @@
 ---
-<div align='center'>
+<div align="center">
 # Human Motor Learning Dynamics in High-dimensional Tasks
-Ankur Kamboj, Rajiv Ranganathan, Xiaobo Tan, Vaibhav Srivastava | 2024  
+  
+Ankur Kamboj, Rajiv Ranganathan, Xiaobo Tan, Vaibhav Srivastava | 2024
+
 [![Paper](https://img.shields.io/badge/PLOS_CB-2024-red)](https://doi.org/10.1371/journal.pcbi.1012455)
 
 </div>
